@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let [timer, timerId] = [0, 0];
+            const h1 = document.querySelector('h1');
+            const button = document.querySelector('#start-stop');
+            const menuButton = document.querySelector('.menu-btn');
+            const menu = document.querySelector('.menu');
+            const modeButton = document.querySelector('#mode-toggle');
+            const body = document.body;
+            let isRunning = false; // 타이머 상태
+
+            button.addEventListener('click', () => {
+                if (!isRunning) {
+                    button.textContent = 'Stop';
+                    timerId = setInterval(() => {
+                        timer += 1;
+                        h1.textContent = `${timer}초`;
+                    }, 1000);
+                } else {
+                    clearInterval(timerId);
+                    button.textContent = 'Start';
+                }
+                isRunning = !isRunning;
+            });
+
+            // 메뉴 버튼 클릭 시 메뉴 보이기/숨기기
+            menuButton.addEventListener('click', () => {
+                menu.classList.toggle('visible');
+            });
+
+            // 모드 전환 버튼 클릭 시 라이트/다크 모드 전환
+            modeButton.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+                modeButton.textContent = body.classList.contains('dark-mode') ? 'Light Mode' : 'Dark Mode';
+            });
+        });
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: whitesmoke;
+            box-sizing: border-box;
+            overflow-x: hidden;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        h4 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        button {
+            margin: 10px;
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            border: none;
+            background-color: pink;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: pink;
+        }
+
+        h1 {
+            margin-top: 20px;
+            font-size: 2rem;
+            color: #333;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+            width: 190px;
+            max-width: 800px;
+            box-sizing: border-box;
+            overflow-x: auto;
+            text-align: center;
+        }
+
+        /* 햄버거 메뉴 버튼 스타일 */
+        .menu-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 30px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            outline: none;
+            color: black; /* 햄버거 버튼 색상 */
+        }
+
+        /* 메뉴 스타일 */
+        .menu {
+            position: absolute;
+            top: 50px;
+            left: 10px;
+            background-color: white;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            padding: 10px;
+            display: none;
+            z-index: 1000;
+        }
+
+        .menu.visible {
+            display: block;
+        }
+
+        .menu a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #333;
+            font-size: 1rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .menu a:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* 다크 모드 스타일 */
+        body.dark-mode {
+            background-color: #333;
+            color: white;
+        }
+
+        body.dark-mode .container {
+            background-color: #444;
+        }
+
+        body.dark-mode .menu {
+            background-color: #555;
+        }
+
+        body.dark-mode .menu a {
+            color: white;
+            border-bottom-color: #666;
+        }
+
+        body.dark-mode .menu a:hover {
+            background-color: #666;
+        }
+
+        @media (max-width: 600px) {
+            h4 {
+                font-size: 1.2rem;
+            }
+
+            button {
+                font-size: 1rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+    <title>Timer with Mode Toggle</title>
+</head>
+<body>
+    <!-- 햄버거 메뉴 버튼 -->
+    <button class="menu-btn">☰</button>
+
+    <!-- 메뉴 -->
+    <div class="menu">
+        <a href="https://www.todolist.com" target="_blank">to-do-list(계획표)</a>
+        <a href="" target="_blank">추가 예정입니다</a>
+    </div>
+
+    <!-- 모드 전환 버튼 -->
+    <button id="mode-toggle">Dark Mode</button>
+
+    <div class="container">
+        <h4>순공시간<br>타이머</h4>
+        <button id="start-stop">Start</button>
+    </div>
+    <h1></h1>
+</body>
+</html>
