@@ -40,7 +40,7 @@
       justify-content: space-between;
       align-items: flex-start;
       border-radius: 5px;
-      transition: background-color 0.3s;
+      transition: background-color 0.3s, color 0.3s;
     }
     li.completed {
       text-decoration: line-through;
@@ -155,6 +155,10 @@
       color: #f0f0f0; /* 다크 모드 할 일 항목 텍스트 색 */
     }
 
+    span.dark-mode {
+      color: #f0f0f0; /* 다크 모드 할 일 항목 텍스트 색 */
+    }
+
     button.dark-mode {
       background-color: #007bff; /* 다크 모드 버튼 색상 */
       color: #fff; /* 다크 모드 버튼 텍스트 색상 */
@@ -183,9 +187,6 @@
       background-color: #007bff; /* 다크 모드 테마 전환 버튼 색상 */
       color: #fff; /* 다크 모드 테마 전환 버튼 텍스트 색상 */
     }
-    h5 {
-        color: red
-    }
   </style>
 </head>
 <body>
@@ -198,13 +199,13 @@
 
 <!-- 드롭다운 메뉴 -->
 <div id="dropdown-menu">
-  <a href="https://timer2123.netlify.app/" target="_blank">timer(순공시간 타이머)</a>
-  <a href="" target="_blank">추가 예정입니다</a>
+  <a href="https://www.google.com" target="_blank">Google</a>
+  <a href="https://www.github.com" target="_blank">GitHub</a>
+  <a href="https://www.stackoverflow.com" target="_blank">StackOverflow</a>
 </div>
 
 <div id="todo-container">
   <h1>할 일 목록</h1>
-  <h5>할 일을 적은 후에 편집을 누른 후 할 일을 다시 적어야 정상적으로 보여집니다</h5> 
   <input type="text" id="new-task" placeholder="새로운 할 일 입력" onkeydown="handleKeyPress(event)">
   <button onclick="addTask()">추가</button>
   <ul id="todo-list"></ul>
@@ -243,7 +244,7 @@
     if (isCompleted) listItem.classList.add('completed');
 
     const taskSpan = document.createElement('span');
-    taskSpan.textContent = taskText; // 순서 없이 할 일 내용 설정
+    taskSpan.textContent = taskText;
 
     const taskButtons = document.createElement('div');
     taskButtons.classList.add('task-buttons');
@@ -256,13 +257,13 @@
     };
 
     const editButton = document.createElement('button');
-    editButton.textContent = '편집';
+    editButton.textContent = '수정';
     editButton.onclick = function () {
-      const newTaskText = prompt('할 일을 수정하세요:', taskSpan.textContent);
-      if (newTaskText) {
-        taskSpan.textContent = newTaskText; // 텍스트 업데이트
+      const newText = prompt('할 일을 수정하세요:', taskSpan.textContent);
+      if (newText !== null) {
+        taskSpan.textContent = newText;
+        updateTaskNumbers(); // 수정 후 순서 업데이트
         saveTasks(); // 수정 후 저장
-        updateTaskNumbers(); // 순서 업데이트
       }
     };
 
@@ -287,8 +288,8 @@
   function saveTasks() {
     const tasks = [];
     const listItems = document.querySelectorAll('#todo-list li');
-    listItems.forEach((item, index) => {
-      const taskText = `${index + 1}. ${item.querySelector('span').textContent}`; // 순서와 텍스트 포함
+    listItems.forEach(item => {
+      const taskText = item.querySelector('span').textContent.split('. ')[1] || item.querySelector('span').textContent; // 순서 부분 제거
       const isCompleted = item.classList.contains('completed');
       tasks.push({ text: taskText, completed: isCompleted });
     });
@@ -309,9 +310,7 @@
   function updateTaskNumbers() {
     const listItems = document.querySelectorAll('#todo-list li');
     listItems.forEach((listItem, index) => {
-      const taskSpan = listItem.querySelector('span');
-      const originalText = taskSpan.textContent.split('. ')[1] || ''; // 기존 텍스트 가져오기
-      taskSpan.textContent = `${index + 1}. ${originalText}`; // 순서 업데이트
+      listItem.querySelector('span').textContent = `${index + 1}. ${listItem.querySelector('span').textContent.split('. ')[1] || listItem.querySelector('span').textContent}`;
     });
   }
 
@@ -330,6 +329,13 @@
     container.classList.toggle('dark-mode');
     dropdownMenu.classList.toggle('dark-mode');
 
+    // 다크 모드 시 할 일 목록 스타일 변경
+    const listItems = document.querySelectorAll('#todo-list li');
+    listItems.forEach(item => {
+      item.classList.toggle('dark-mode');
+      item.querySelector('span').classList.toggle('dark-mode');
+    });
+
     // 다크 모드와 라이트 모드 버튼 텍스트 변경
     document.getElementById('theme-toggle').textContent = isDarkMode ? '라이트 모드' : '다크 모드';
 
@@ -346,6 +352,13 @@
       document.getElementById('todo-container').classList.add('dark-mode');
       document.getElementById('dropdown-menu').classList.add('dark-mode');
       document.getElementById('theme-toggle').textContent = '라이트 모드';
+
+      // 할 일 목록의 다크 모드 스타일 적용
+      const listItems = document.querySelectorAll('#todo-list li');
+      listItems.forEach(item => {
+        item.classList.add('dark-mode');
+        item.querySelector('span').classList.add('dark-mode');
+      });
     }
   }
 </script>
