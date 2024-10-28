@@ -1,5 +1,5 @@
 # todolist.github.io 
-# 학교 과제용입니다.
+# 학교 프로젝트입니다.
 ```
 <style>부터</style> 
 ```
