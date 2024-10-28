@@ -1,7 +1,7 @@
 # todolist.github.io 
 # 학교 프로젝트입니다.
 ```
-<style>부터</style> 
+<style> 부터 </style> 
 ```
 는 사이트를 꾸며주는 용도입니다.(css)
 ```
