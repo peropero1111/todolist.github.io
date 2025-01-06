@@ -1,4 +1,4 @@
-  // 페이지가 로드될 때 저장된 목록 불러오기
+
   window.onload = function() {
     loadTasks();
     loadTheme();  // 페이지 로드 시 테마 불러오기
