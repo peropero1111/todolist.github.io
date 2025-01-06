@@ -1,215 +1,83 @@
 <!DOCTYPE html>
-<HTML lang="ko">
-<Head>
-  <meta charset="UTF-8">
-  <meta NAME="viewport" content="width=device-width, initial-scale=1.0">
-  <title>To-Do List</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      transition: background-color 0.3s, color 0.3s;
-      background-color: #f0f0f0; /* 라이트 모드 기본 배경 */
-      color: #333; /* 라이트 모드 기본 텍스트 색 */
-    }
-    #todo-container {
-      background-color: #fff;
-      Padding: 20px;
-      border-radius: 10px;
-      width: 300px;
-      transition: background-color 0.3s, color 0.3s;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    ul {
-      list-style: None;
-      Padding: 0;
-    }
-    li {
-      background-color: #eee;
-      margin: 10px 0;
-      Padding: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      border-radius: 5px;
-      transition: background-color 0.3s, color 0.3s;
-    }
-    li.completed {
-      text-decoration: line-through;
-      color: #888;
-    }
-    button {
-      background-color: #007bff;
-      border: None;
-      Padding: 5px 10px;
-      cursor: pointer;
-      border-radius: 5px;
-      transition: background-color 0.2s;
-      margin-left: 5px;
-      color: white;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    input[type="text"] {
-      width: calc(100% - 60px);
-      Padding: 5px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      margin-bottom: 10px;
-    }
-    .task-buttons {
-      display: flex;
-      margin-top: 5px;
-    }
-    .task-buttons button {
-      flex: 1;
-    }
-    span {
-      flex-grow: 1;
-      word-wrap: break-word;
-      max-width: 60%;
-    }
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            color: #333;
+        }
 
-    /* 햄버거 버튼 스타일 */
-    #menu-toggle {
-      position: absolute;
-      Top: 10px;
-      left: 10px;
-      background-color: #007bff;
-      color: #fff;
-      border: None;
-      Padding: 10px;
-      cursor: pointer;
-      font-size: 18px;
-      border-radius: 5px;
-    }
+        #todo-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
 
-    #menu-toggle:hover {
-      background-color: #0056b3;
-    }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-    /* 드롭다운 메뉴 */
-    #dropdown-menu {
-      display: None;
-      position: absolute;
-      Top: 50px;
-      left: 10px;
-      background-color: #fff;
-      Padding: 10px;
-      border-radius: 5px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
 
-    #dropdown-menu a {
-      color: #007bff;
-      text-decoration: None;
-      display: block;
-      margin: 5px 0;
-    }
+        li {
+            background-color: #eee;
+            margin: 10px 0;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 5px;
+        }
 
-    #dropdown-menu a:hover {
-      text-decoration: underline;
-    }
+        li.completed {
+            text-decoration: line-through;
+            color: #888;
+        }
 
-    /* 테마 전환 버튼 스타일 */
-    #theme-toggle {
-      position: absolute;
-      Top: 10px;
-      right: 10px;
-      background-color: #007bff;
-      color: #fff;
-      border: None;
-      Padding: 10px;
-      cursor: pointer;
-      font-size: 14px;
-      border-radius: 5px;
-    }
+        button {
+            background-color: #007bff;
+            border: None;
+            Padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            color: white;
+        }
 
-    #theme-toggle:hover {
-      background-color: #0056b3;
-    }
+        button:hover {
+            background-color: #0056b3;
+        }
 
-    /* 다크 모드 스타일 */
-    body.dark-mode {
-      background-color: #1e1e1e; /* 다크 모드 배경 */
-      color: #f0f0f0; /* 다크 모드 텍스트 색 */
-    }
-
-    #todo-container.dark-mode {
-      background-color: #2b2b2b; /* 다크 모드 컨테이너 배경 */
-      color: #f0f0f0; /* 다크 모드 컨테이너 텍스트 색 */
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-    }
-
-    li.dark-mode {
-      background-color: #3c3c3c; /* 다크 모드 할 일 항목 배경 */
-      color: #f0f0f0; /* 다크 모드 할 일 항목 텍스트 색 */
-    }
-
-    span.dark-mode {
-      color: #f0f0f0; /* 다크 모드 할 일 항목 텍스트 색 */
-    }
-
-    button.dark-mode {
-      background-color: #007bff; /* 다크 모드 버튼 색상 */
-      color: #fff; /* 다크 모드 버튼 텍스트 색상 */
-    }
-
-    input[type="text"].dark-mode {
-      background-color: #444; /* 다크 모드 입력창 배경 */
-      color: #fff; /* 다크 모드 입력창 텍스트 색상 */
-      border: 1px solid #666; /* 다크 모드 입력창 테두리 */
-    }
-
-    #menu-toggle.dark-mode {
-      background-color: #007bff; /* 다크 모드 햄버거 버튼 색상 */
-      color: #fff; /* 다크 모드 햄버거 버튼 텍스트 색상 */
-    }
-
-    #dropdown-menu.dark-mode {
-      background-color: #2b2b2b; /* 다크 모드 드롭다운 메뉴 배경 */
-    }
-
-    #dropdown-menu.dark-mode a {
-      color: #007bff; /* 다크 모드 드롭다운 메뉴 링크 색상 */
-    }
-
-    #theme-toggle.dark-mode {
-      background-color: #007bff; /* 다크 모드 테마 전환 버튼 색상 */
-      color: #fff; /* 다크 모드 테마 전환 버튼 텍스트 색상 */
-    }
-  </style>
+        input[type="text"] {
+            width: calc(100% - 60px);
+            Padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+    </style>
 </Head>
 <body>
-
-<!-- 햄버거 버튼 -->
-<button id="menu-toggle">☰</button>
-
-<!-- 테마 전환 버튼 -->
-<button id="theme-toggle">다크 모드</button>
-
-<!-- 드롭다운 메뉴 -->
-<div id="dropdown-menu">
-  <a href="https://timer2123.netlify.app/" target="_blank">timer(순공시간 타이머)</a>
-  <a href="" target="_blank">추가 예정입니다</a>
-</div>
-
-<div id="todo-container">
-  <h1>할 일 목록</h1>
-  <input type="text" id="new-task" placeholder="새로운 할 일 입력" onkeydown="handleKeyPress(event)">
-  <button onclick="addTask()">추가</button>
-  <ul id="todo-list"></ul>
-</div>
-
-<script src="todolist.js"></script>
+    <div id="todo-container">
+        <h1>To-Do List</h1>
+        <input id="new-task" type="text" placeholder="Add a new task">
+        <button id="add-task-btn">Add</button>
+        <ul id="todo-list"></ul>
+    </div>
+    <script src="todolist.js"></script>
 </body>
 </HTML>
